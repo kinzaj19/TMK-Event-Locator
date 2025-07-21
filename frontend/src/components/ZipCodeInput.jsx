@@ -17,8 +17,8 @@ const ZipCodeInput = ({ onZipCodeChange }) => {
   };
 
   return (
-    <div style={{ marginBottom: "1rem" }}>
-      <label htmlFor="zip-input" style={{ display: "block", marginBottom: 4 }}>
+    <div className="zip-input">
+      <label htmlFor="zip-input" className="filter-label">
         Enter ZIP Code:
       </label>
       <input
@@ -27,16 +27,12 @@ const ZipCodeInput = ({ onZipCodeChange }) => {
         value={zip}
         onChange={handleChange}
         maxLength={5}
-        style={{
-          padding: 8,
-          borderRadius: 4,
-          border: "1px solid #ccc",
-          width: 120,
-        }}
         placeholder="e.g. 12345"
       />
       {error && zip.length === 5 && (
-        <div style={{ color: "red", fontSize: 12, marginTop: 4 }}>{error}</div>
+        <div style={{ color: "#ff4e50", fontSize: 12, marginTop: 4 }}>
+          {error}
+        </div>
       )}
     </div>
   );

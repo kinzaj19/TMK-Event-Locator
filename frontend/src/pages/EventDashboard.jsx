@@ -66,21 +66,44 @@ const EventDashboard = () => {
   });
 
   return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
-      <h2 style={{ marginBottom: 24 }}>Event Locator</h2>
-      <div
-        style={{ display: "flex", flexWrap: "wrap", gap: 24, marginBottom: 24 }}
-      >
-        <ZipCodeInput onZipCodeChange={setZip} />
-        <EventTypeFilter selectedType={eventType} onTypeChange={setEventType} />
-        <LanguageFilter selectedLanguages={languages} onChange={setLanguages} />
+    <div className="dashboard-container">
+      <div className="header-area">
+        <h1 className="dashboard-title">Event Locator</h1>
+      </div>
+
+      <div className="filters-area">
+        <div className="filters-container">
+          <ZipCodeInput onZipCodeChange={setZip} />
+          <EventTypeFilter
+            selectedType={eventType}
+            onTypeChange={setEventType}
+          />
+          <LanguageFilter
+            selectedLanguages={languages}
+            onChange={setLanguages}
+          />
+        </div>
+      </div>
+
+      <div className="map-area">
+        <MapView />
+      </div>
+
+      <div className="calendar-area">
         <DateRangePicker range={dateRange} onChange={setDateRange} />
       </div>
-      <MapView events={filteredEvents} />
-      <div>
+
+      <div className="events-area">
         {filteredEvents.length === 0 ? (
-          <div style={{ color: "#888", marginTop: 32 }}>
-            No events found for selected filters.
+          <div
+            style={{
+              color: "#e0e0e0",
+              textAlign: "center",
+              paddingTop: "50px",
+              fontSize: "1.2rem",
+            }}
+          >
+            No events found for the selected filters.
           </div>
         ) : (
           filteredEvents.map((event) => (

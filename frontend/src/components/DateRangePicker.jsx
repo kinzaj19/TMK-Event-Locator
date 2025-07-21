@@ -22,8 +22,8 @@ const DateRangePicker = ({ range, onChange }) => {
   };
 
   return (
-    <div style={{ marginBottom: "1rem" }}>
-      <div style={{ marginBottom: 4 }}>Date Range:</div>
+    <div>
+      <div className="filter-label">Date Range:</div>
       <DateRange
         ranges={[selectionRange]}
         onChange={handleSelect}

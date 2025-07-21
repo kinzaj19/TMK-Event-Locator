@@ -4,23 +4,14 @@ const EVENT_TYPES = ["Workshop", "Seminar", "Drop-in Help"];
 
 const EventTypeFilter = ({ selectedType, onTypeChange }) => {
   return (
-    <div style={{ marginBottom: "1rem" }}>
-      <label
-        htmlFor="event-type-select"
-        style={{ display: "block", marginBottom: 4 }}
-      >
+    <div className="event-type-filter">
+      <label htmlFor="event-type-select" className="filter-label">
         Event Type:
       </label>
       <select
         id="event-type-select"
         value={selectedType || ""}
         onChange={(e) => onTypeChange && onTypeChange(e.target.value)}
-        style={{
-          padding: 8,
-          borderRadius: 4,
-          border: "1px solid #ccc",
-          minWidth: 160,
-        }}
       >
         <option value="">All Types</option>
         {EVENT_TYPES.map((type) => (
