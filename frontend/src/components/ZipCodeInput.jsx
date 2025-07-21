@@ -1,12 +1,7 @@
 import React from 'react';
 import { MapPin, Zap } from 'lucide-react';
 
-interface ZipCodeInputProps {
-  value: string;
-  onChange: (value: string) => void;
-}
-
-const ZipCodeInput: React.FC<ZipCodeInputProps> = ({ value, onChange }) => {
+const ZipCodeInput = ({ value, onChange }) => {
   return (
     <div className="relative group">
       <label className="block text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
@@ -41,3 +36,4 @@ const ZipCodeInput: React.FC<ZipCodeInputProps> = ({ value, onChange }) => {
 };
 
 export default ZipCodeInput;
+
