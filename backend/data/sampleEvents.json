@@ -1,1 +1,37 @@
+const events = [
+  {
+    event_name: "Intro to Email",
+    location_zip: "94306",
+    date: "2025-08-10",
+    language: "English",
+    instructor: "Jane Lee",
+    type: "Workshop"
+  },
+  {
+    event_name: "Drop-in for Google Docs",
+    location_zip: "94306",
+    date: "2025-08-12",
+    language: "Spanish",
+    instructor: "Carlos Ruiz",
+    type: "Drop-in Help"
+  },
+  {
+    event_name: "Excel Basics",
+    location_zip: "94305",
+    date: "2025-08-15",
+    language: "English",
+    instructor: "John Doe",
+    type: "Seminar"
+  },
+  {
+    event_name: "Google Sheets for Beginners",
+    location_zip: "10001",
+    date: "2025-09-01",
+    language: "English",
+    instructor: "Amy Smith",
+    type: "Workshop"
+  }
+];
+
+module.exports = events;
 
