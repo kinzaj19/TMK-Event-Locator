@@ -1,11 +1,6 @@
 import React from 'react';
 import { Globe, Zap } from 'lucide-react';
 
-interface LanguageFilterProps {
-  value: string;
-  onChange: (value: string) => void;
-}
-
 const languages = [
   { value: '', label: 'All Languages', emoji: '🌍', flag: '🌈' },
   { value: 'English', label: 'English', emoji: '🇺🇸', flag: '🇺🇸' },
@@ -15,7 +10,7 @@ const languages = [
   { value: 'Korean', label: 'Korean', emoji: '🇰🇷', flag: '🇰🇷' }
 ];
 
-const LanguageFilter: React.FC<LanguageFilterProps> = ({ value, onChange }) => {
+const LanguageFilter = ({ value, onChange }) => {
   return (
     <div className="relative group">
       <label className="block text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
