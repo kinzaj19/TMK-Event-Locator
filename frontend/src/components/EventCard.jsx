@@ -1,14 +1,8 @@
 import React from 'react';
-import { MapPin, Clock, User, Users, Globe, BookOpen, Star, Heart, Zap } from 'lucide-react';
-import { Event } from '../types';
+import { MapPin, Clock, User, Globe, BookOpen, Star, Heart, Zap } from 'lucide-react';
 
-interface EventCardProps {
-  event: Event;
-  onLocationClick?: () => void;
-}
-
-const EventCard: React.FC<EventCardProps> = ({ event, onLocationClick }) => {
-  const formatDate = (dateString: string) => {
+const EventCard = ({ event, onLocationClick }) => {
+  const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
       weekday: 'long',
@@ -18,14 +12,14 @@ const EventCard: React.FC<EventCardProps> = ({ event, onLocationClick }) => {
     });
   };
 
-  const formatTime = (timeString: string) => {
+  const formatTime = (timeString) => {
     return new Date(`2000-01-01T${timeString}`).toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit'
     });
   };
 
-  const getEventTypeStyle = (type: string) => {
+  const getEventTypeStyle = (type) => {
     switch (type) {
       case 'Workshop':
         return {
@@ -54,13 +48,13 @@ const EventCard: React.FC<EventCardProps> = ({ event, onLocationClick }) => {
     }
   };
 
-  const getSpotsStyle = (spotsRemaining: number) => {
+  const getSpotsStyle = (spotsRemaining) => {
     if (spotsRemaining === 0) return { color: 'text-red-600', bg: 'bg-red-100', emoji: '❌' };
     if (spotsRemaining <= 5) return { color: 'text-orange-600', bg: 'bg-orange-100', emoji: '⚠️' };
     return { color: 'text-green-600', bg: 'bg-green-100', emoji: '✅' };
   };
 
-  const getLanguageStyle = (language: string) => {
+  const getLanguageStyle = (language) => {
     switch (language) {
       case 'Spanish':
         return { bg: 'bg-gradient-to-r from-red-100 to-yellow-100', text: 'text-red-700', flag: '🇪🇸' };
