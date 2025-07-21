@@ -298,14 +298,15 @@ body {
 .dashboard-container {
   display: grid;
   grid-template-areas: "header header" "filters calendar" "map events";
-  grid-template-columns: 650px 1fr;
+  grid-template-columns: 1000px 1000px;
   grid-template-rows: auto auto 1fr;
-  gap: 70px;
-  padding: 24px;
-  max-width: 1600px;
+  gap: 57px;
+  padding: 25px;
+  max-width: 2000px;
   margin: 0 auto;
   height: 100vh;
   box-sizing: border-box;
+  transform: translateY(-30px);
 }
 .header-area {
   grid-area: header;
@@ -333,7 +334,7 @@ body {
   color: #a0a0a0;
   font-size: 1.5rem;
   font-weight: 500;
-  transform: translateY(-80px); /* Moves the map up by 50px */
+  transform: translateY(-45px); /* Moves the map up by 50px */
 }
 .calendar-area {
   grid-area: calendar;
@@ -341,7 +342,69 @@ body {
   backdrop-filter: none;
   border: none;
   padding: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  font-size: 1.5rem;
 }
+.rdrCalendarWrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+  border-radius: 7px !important;
+}
+.rdrMonths {
+  width: 100% !important;
+  flex-wrap: wrap; 
+  justify-content: space-between; 
+}
+.rdrMonth {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 1 1 100% !important; /* Make it grow/shrink with container */
+  box-sizing: border-box;
+}
+.rdrMonthAndYearWrapper {
+  width: 100% !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  font-size: 1.1 rem;
+}
+.rdrMonthAndYearPickers select {
+  font-size: 1.1rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #c5e8dc;
+  background-color: #ecf8f3;
+  color: #3eb489;
+  margin-right: 10px;
+  width: auto;
+}
+.rdrNextPrevButton {
+  background-color: #ecf8f3 !important;
+  color: #3eb489 !important;
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+.rdrNextPrevButton:hover {
+  background-color: #d0f0e2 !important;
+}
+.rdrDateDisplayWrapper {
+  font-size: 1rem !important; /* Or 1.3rem, adjust as needed */
+  padding: 10px 15px;
+}
+
+.rdrDateDisplayItem input {
+  font-size: 1.2rem !important;  /* Only increase text size */
+  font-weight: 500;
+  color: #3eb489;               /* Optional: match your theme */
+}
+
 .events-area {
   grid-area: events;
   overflow-y: auto;
@@ -352,15 +415,17 @@ body {
   font-size: 3.5rem;
   font-weight: 700;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-top: 55px;
+  margin-bottom: 10px;
 }
 
 /* --- Individual Component Styles --- */
 .filter-label {
   display: block;
-  margin-bottom: 8px;
-  color: #65c3a1;
-  font-weight: 500;
-  font-size: 0.9rem;
+  margin-bottom: 22px;
+  color: #488e74;
+  font-weight: 900;
+  font-size: 1.7rem;
 }
 .zip-input,
 .event-type-filter {
@@ -368,18 +433,19 @@ body {
 }
 .zip-input input,
 .event-type-filter select {
-  width: 100%;
+  width: 97%;
   padding: 12px;
   border-radius: 8px;
   border: 1px solid #c5e8dc;
   background: #ecf8f3;
   color: #3eb489;
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 .zip-input input::placeholder {
   color: #8bd2b8;
 }
 .language-filter button {
+  width: 19%;
   padding: 8px 16px;
   border-radius: 20px;
   border: 1px solid #b2e1d0;
@@ -388,6 +454,7 @@ body {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   font-weight: 500;
+  font-size: 1.5rem;
 }
 .language-filter button.selected {
   background: #3eb489;
