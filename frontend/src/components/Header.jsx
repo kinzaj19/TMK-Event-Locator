@@ -1,7 +1,7 @@
 import React from 'react';
 import { Computer, Heart, Users, BookOpen, Smartphone, Wifi, Monitor, Mouse } from 'lucide-react';
 
-const AnimatedHeader: React.FC = () => {
+const AnimatedHeader = () => {
   return (
     <header className="relative overflow-hidden bg-gradient-to-br from-pink-300 via-purple-300 via-blue-300 to-cyan-300 py-20 min-h-[400px]">
       {/* Animated Background Elements */}
@@ -108,4 +108,7 @@ const AnimatedHeader: React.FC = () => {
                 <Computer className="text-blue-600 w-10 h-10 animate-pulse" />
               </div>
               <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full flex items-center justify-center animate-bounce shadow-lg">
-                <Heart classN
+                <Heart className="text-white w-4 h-4" />
+              </div>
+            </div>
+
