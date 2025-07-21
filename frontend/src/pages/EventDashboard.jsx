@@ -7,15 +7,14 @@ import EventCard from '../components/EventCard';
 import MapView from '../components/MapView';
 import AnimatedHeader from '../components/AnimatedHeader';
 import { eventApi } from '../services/eventApi';
-import { Event, FilterState } from '../types';
 import { Sparkles, RefreshCw, Map, List, Heart } from 'lucide-react';
 
-const EventDashboard: React.FC = () => {
-  const [events, setEvents] = useState<Event[]>([]);
-  const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
+const EventDashboard = () => {
+  const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMap, setShowMap] = useState(false);
-  const [filters, setFilters] = useState<FilterState>({
+  const [filters, setFilters] = useState({
     zipCode: '',
     eventType: '',
     language: '',
@@ -44,7 +43,8 @@ const EventDashboard: React.FC = () => {
   };
 
   const filterEvents = async () => {
-    if (!filters.zipCode && !filters.eventType && !filters.language && !filters.dateRange.start) {
+    const { zipCode, eventType, language, dateRange } = filters;
+    if (!zipCode && !eventType && !language && !dateRange.start) {
       setFilteredEvents(events);
       return;
     }
@@ -60,7 +60,7 @@ const EventDashboard: React.FC = () => {
     }
   };
 
-  const handleFilterChange = (filterType: keyof FilterState, value: any) => {
+  const handleFilterChange = (filterType, value) => {
     setFilters(prev => ({
       ...prev,
       [filterType]: value
@@ -81,12 +81,10 @@ const EventDashboard: React.FC = () => {
       <AnimatedHeader />
       
       <div className="container mx-auto px-4 py-12">
-        {/* Super Colorful Search Controls */}
         <div className="bg-gradient-to-r from-white via-blue-50 to-purple-50 backdrop-blur-sm rounded-3xl shadow-2xl p-8 mb-10 border-4 border-gradient-to-r from-pink-200 via-blue-200 to-purple-200 relative overflow-hidden">
-          {/* Animated Background Elements */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-pink-300 to-purple-300 opacity-20 rounded-full -mr-16 -mt-16 animate-pulse"></div>
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-br from-blue-300 to-cyan-300 opacity-20 rounded-full -ml-12 -mb-12 animate-bounce"></div>
-          
+
           <div className="relative z-10">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent mb-3 flex items-center justify-center gap-3">
@@ -117,7 +115,7 @@ const EventDashboard: React.FC = () => {
                 onChange={(value) => handleFilterChange('dateRange', value)}
               />
             </div>
-            
+
             <div className="flex flex-wrap gap-4 mt-8 justify-center">
               <button
                 onClick={clearAllFilters}
@@ -146,7 +144,6 @@ const EventDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Colorful Results Count */}
         <div className="mb-8 text-center">
           <div className="inline-block bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-white p-6 rounded-3xl shadow-2xl border-4 border-white">
             <h2 className="text-3xl font-bold mb-2 drop-shadow-lg flex items-center justify-center gap-3">
@@ -160,7 +157,6 @@ const EventDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Super Colorful Loading State */}
         {loading && (
           <div className="flex justify-center items-center py-16">
             <div className="text-center">
@@ -177,7 +173,6 @@ const EventDashboard: React.FC = () => {
           </div>
         )}
 
-        {/* Map or List View */}
         {!loading && (
           <>
             {showMap ? (
@@ -190,7 +185,6 @@ const EventDashboard: React.FC = () => {
                     event={event}
                     onLocationClick={() => {
                       setShowMap(true);
-                      // In a real app, you'd center the map on this event
                     }}
                   />
                 ))}
@@ -228,3 +222,4 @@ const EventDashboard: React.FC = () => {
 };
 
 export default EventDashboard;
+
