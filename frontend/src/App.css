@@ -355,8 +355,8 @@ body {
 }
 .rdrMonths {
   width: 100% !important;
-  flex-wrap: wrap; 
-  justify-content: space-between; 
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 .rdrMonth {
   width: 100% !important;
@@ -386,10 +386,16 @@ body {
 .rdrNextPrevButton {
   background-color: #ecf8f3 !important;
   color: #3eb489 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ecf8f3 !important;
   border-radius: 4px;
-  padding: 4px 10px;
+  padding: 6px 10px; /* Balanced padding */
   cursor: pointer;
   transition: background 0.2s ease-in-out;
+  width: 32px;
+  height: 32px;
 }
 .rdrNextPrevButton:hover {
   background-color: #d0f0e2 !important;
@@ -400,9 +406,9 @@ body {
 }
 
 .rdrDateDisplayItem input {
-  font-size: 1.2rem !important;  /* Only increase text size */
+  font-size: 1.2rem !important; /* Only increase text size */
   font-weight: 500;
-  color: #3eb489;               /* Optional: match your theme */
+  color: #3eb489; /* Optional: match your theme */
 }
 
 .events-area {
