@@ -1,11 +1,6 @@
 import React from 'react';
 import { BookOpen, Zap } from 'lucide-react';
 
-interface EventTypeFilterProps {
-  value: string;
-  onChange: (value: string) => void;
-}
-
 const eventTypes = [
   { value: '', label: 'All Event Types', emoji: '🌈' },
   { value: 'Workshop', label: 'Workshop', emoji: '🎯' },
@@ -13,7 +8,7 @@ const eventTypes = [
   { value: 'Seminar', label: 'Seminar', emoji: '📚' }
 ];
 
-const EventTypeFilter: React.FC<EventTypeFilterProps> = ({ value, onChange }) => {
+const EventTypeFilter = ({ value, onChange }) => {
   return (
     <div className="relative group">
       <label className="block text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
