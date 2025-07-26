@@ -1,37 +1,68 @@
 import React from "react";
-import { DateRange } from "react-date-range";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
+import { Calendar, Zap, Sparkles } from "lucide-react";
 
-// Usage:
-// <DateRangePicker
-//   range={{ startDate, endDate }}
-//   onChange={({ startDate, endDate }) => ...}
-// />
-
-const DateRangePicker = ({ range, onChange }) => {
-  const selectionRange = {
-    startDate: range?.startDate || new Date(),
-    endDate: range?.endDate || new Date(),
-    key: "selection",
+const DateRangePicker = ({ value, onChange }) => {
+  const handleStartDateChange = (start) => {
+    onChange({ ...value, start });
   };
 
-  const handleSelect = (ranges) => {
-    const { startDate, endDate } = ranges.selection;
-    onChange && onChange({ startDate, endDate });
+  const handleEndDateChange = (end) => {
+    onChange({ ...value, end });
   };
+
+  const today = new Date().toISOString().split("T")[0];
 
   return (
-    <div>
-      <div className="filter-label">Date Range:</div>
-      <DateRange
-        ranges={[selectionRange]}
-        onChange={handleSelect}
-        moveRangeOnFirstSelection={false}
-        showSelectionPreview={true}
-        editableDateInputs={true}
-        maxDate={new Date(2100, 0, 1)}
-      />
+    <div className="date-range-picker">
+      <div className="date-range-header">
+        <div className="header-icon">
+          <Calendar size={20} />
+        </div>
+        <span className="header-title">Date Range</span>
+        <div className="header-sparkles">
+          <Zap size={16} />
+          <Sparkles size={14} />
+        </div>
+      </div>
+
+      <div className="date-inputs-container">
+        {/* Start Date */}
+        <div className="date-input-wrapper start-date">
+          <div className="input-icon">
+            <Calendar size={16} />
+          </div>
+          <input
+            type="date"
+            value={value.start}
+            onChange={(e) => handleStartDateChange(e.target.value)}
+            min={today}
+            className="date-input start-input"
+            placeholder="Start Date"
+          />
+          <div className="input-emoji">🗓️</div>
+        </div>
+
+        {/* End Date */}
+        <div className="date-input-wrapper end-date">
+          <div className="input-icon">
+            <Calendar size={16} />
+          </div>
+          <input
+            type="date"
+            value={value.end}
+            onChange={(e) => handleEndDateChange(e.target.value)}
+            min={value.start || today}
+            className="date-input end-input"
+            placeholder="End Date"
+          />
+          <div className="input-emoji">📆</div>
+        </div>
+      </div>
+
+      <div className="date-range-message">
+        <span className="message-text">Pick your perfect learning dates </span>
+        <span className="message-sparkle">⏰</span>
+      </div>
     </div>
   );
 };

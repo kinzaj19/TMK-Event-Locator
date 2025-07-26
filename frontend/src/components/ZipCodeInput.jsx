@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { MapPin, Zap, Sparkles } from "lucide-react";
 
 const ZipCodeInput = ({ onZipCodeChange }) => {
   const [zip, setZip] = useState("");
@@ -17,22 +18,37 @@ const ZipCodeInput = ({ onZipCodeChange }) => {
   };
 
   return (
-    <div className="zip-input">
-      <label htmlFor="zip-input" className="filter-label">
-        Enter ZIP Code:
-      </label>
-      <input
-        id="zip-input"
-        type="text"
-        value={zip}
-        onChange={handleChange}
-        maxLength={5}
-        placeholder="e.g. 12345"
-      />
-      {error && zip.length === 5 && (
-        <div style={{ color: "#ff4e50", fontSize: 12, marginTop: 4 }}>
-          {error}
+    <div className="zip-code-picker">
+      <div className="zip-code-header">
+        <div className="header-icon">
+          <MapPin size={20} />
         </div>
+        <span className="header-title">Zip Code</span>
+        <div className="header-sparkles">
+          <Zap size={16} />
+          <Sparkles size={14} />
+        </div>
+      </div>
+
+      <div className="zip-input-container">
+        <div className="input-icon">
+          <MapPin size={16} />
+        </div>
+        <input
+          type="text"
+          value={zip}
+          onChange={handleChange}
+          maxLength={5}
+          placeholder="Enter zip code"
+          className="zip-input"
+        />
+        <div className="input-emoji">📍</div>
+      </div>
+
+      <div className="example-text">e.g., 94306 (Palo Alto area)</div>
+
+      {error && zip.length === 5 && (
+        <div className="error-message">{error}</div>
       )}
     </div>
   );
