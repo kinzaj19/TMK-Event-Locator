@@ -39,7 +39,6 @@ const DateRangePicker = ({ value, onChange }) => {
             className="date-input start-input"
             placeholder="Start Date"
           />
-          <div className="input-emoji">🗓️</div>
         </div>
 
         {/* End Date */}
@@ -55,7 +54,6 @@ const DateRangePicker = ({ value, onChange }) => {
             className="date-input end-input"
             placeholder="End Date"
           />
-          <div className="input-emoji">📆</div>
         </div>
       </div>
 

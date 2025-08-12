@@ -214,84 +214,118 @@ const EventDashboard = () => {
   });
 
   return (
-    <>
-      <div className="tmk-header-wrapper">
-        <h1 className="tmk-title">Tech Me Kid</h1>
-        <div className="tmk-subtitle">
-          Empower Digital Citizens. Connect Passionate Student Volunteers with
-          Seniors. Find Workshops and Sessions Near You!
+    <div className="senior-planet-dashboard">
+      {/* TMK Header Section - Paragraph */}
+      <section className="tmk-header-section">
+        <div className="tmk-header-paragraph">
+          <p>
+            Welcome to Tech Me Kid's Event Locator! Discover amazing tech
+            learning opportunities, connect with student volunteers, and access
+            free educational resources in your community. Whether you're looking
+            for live events, workshops, or learning materials, we've got you
+            covered.
+          </p>
         </div>
-        <div className="tmk-header-buttons">
-          <button className="tmk-header-btn">Live Events Available 🎯</button>
-          <button className="tmk-header-btn">
-            Student Volunteers Ready 🙋‍♀️
-          </button>
-          <button className="tmk-header-btn">Free Learning 📚</button>
-        </div>
-      </div>
-      <div className="container mx-auto px-4 py-12">
-        {/* Filter Box */}
-        <div className="filter-box">
-          <div className="text-center mb-8">
-            <h2 className="text-5xl font-bold mb-4">
-              👵 Find Your Perfect Tech Learning Experience 🧓
-            </h2>
-            <p className="text-gray-600 font-medium text-2xl">
-              Use these filters to discover amazing events near you!
+      </section>
+
+      {/* Dashboard Wrapper for Side-by-Side Layout */}
+      <div className="dashboard-wrapper">
+        {/* Event Search Section - Filters Only */}
+        <section id="event-search-section" className="event-search-section">
+          <div className="search-container">
+            <h2 className="search-title">Find Events Near You</h2>
+            <p className="search-subtitle">
+              Use these filters to discover amazing tech learning events in your
+              area!
             </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <ZipCodeInput onZipCodeChange={setZip} />
-            <EventTypeFilter
-              selectedType={eventType}
-              onTypeChange={setEventType}
-            />
-            <LanguageFilter
-              selectedLanguages={languages}
-              onChange={setLanguages}
-            />
-            <DateRangePicker value={dateRange} onChange={setDateRange} />
-          </div>
-          <div className="clear-filters-container">
-            <button onClick={clearAllFilters} className="clear-filters-btn">
-              🔄 Clear All Filters
-            </button>
-          </div>
-        </div>
-        {/* Results Count Box */}
-        <div className="results-count-box">
-          🎉 Found {filteredEvents.length} Amazing Events 🎉
-          <div
-            style={{ fontWeight: 500, fontSize: "1.1rem", marginTop: "0.5rem" }}
-          >
-            Discover life-changing tech learning with Tech Me Kid!
-          </div>
-        </div>
-      </div>
-      <div className="dashboard-container">
-        <div className="events-area">
-          {filteredEvents.length === 0 ? (
-            <div
-              style={{
-                color: "#e0e0e0",
-                textAlign: "center",
-                paddingTop: "50px",
-                fontSize: "1.2rem",
-              }}
-            >
-              No events found for the selected filters.
+
+            <div className="filters-grid">
+              <ZipCodeInput onZipCodeChange={setZip} />
+              <EventTypeFilter
+                selectedType={eventType}
+                onTypeChange={setEventType}
+              />
+              <LanguageFilter
+                selectedLanguages={languages}
+                onChange={setLanguages}
+              />
             </div>
-          ) : (
-            filteredEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
-            ))
-          )}
-        </div>
-        <div className="map-area">
-          <MapView events={filteredEvents} />
-        </div>
+
+            <div className="date-range-container">
+              <DateRangePicker value={dateRange} onChange={setDateRange} />
+            </div>
+
+            <div className="clear-filters-container">
+              <button onClick={clearAllFilters} className="clear-filters-btn">
+                🔄 Clear All Filters
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Events Results Section - Beside Filters */}
+        <section className="events-results-section">
+          <div className="events-results-sidebar">
+            <div className="results-header">
+              <h3 className="results-title">
+                🎉 Found {filteredEvents.length} Amazing Events 🎉
+              </h3>
+              <p className="results-subtitle">
+                Discover life-changing tech learning opportunities!
+              </p>
+            </div>
+
+            {/* Multiple Rows of 4 Cards Each with Vertical Scrolling */}
+            <div className="events-vertical-container">
+              {filteredEvents.length === 0 ? (
+                <div className="no-events">
+                  <p>No events found for the selected filters.</p>
+                </div>
+              ) : (
+                <>
+                  {/* Generate rows of 4 cards each */}
+                  {Array.from(
+                    { length: Math.ceil(filteredEvents.length / 4) },
+                    (_, rowIndex) => (
+                      <div key={rowIndex} className="events-row">
+                        {filteredEvents
+                          .slice(rowIndex * 4, (rowIndex + 1) * 4)
+                          .map((event) => (
+                            <EventCard key={event.id} event={event} />
+                          ))}
+                      </div>
+                    )
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        </section>
       </div>
-    </>
+
+      {/* Map Below Both Sections */}
+      <div id="map-container" className="map-container">
+        <MapView events={filteredEvents} />
+      </div>
+
+      {/* Community Section */}
+      <section className="community-section">
+        <div className="community-container">
+          <h2 className="community-title">Connect with Tech Me Kid</h2>
+          <p className="community-subtitle">
+            Join our professional network and stay updated!
+          </p>
+          <a
+            href="https://www.linkedin.com/company/tech-me-kid"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="signup-btn"
+          >
+            Connect on LinkedIn
+          </a>
+        </div>
+      </section>
+    </div>
   );
 };
 

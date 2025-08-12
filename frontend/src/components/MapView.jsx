@@ -1,7 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+// Fix for default markers in Leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+});
 
 const MapView = ({ events = [] }) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
 
   // Create a map that shows all event locations with interactive pins
   const eventLocations = [
@@ -49,19 +64,83 @@ const MapView = ({ events = [] }) => {
     (loc) => eventsByZip[loc.zip] && eventsByZip[loc.zip].length > 0
   );
 
-  // Create map URL with markers for each location that has events
-  let mapUrl =
-    "https://www.openstreetmap.org/export/embed.html?bbox=-98.35,39.5,-98.35,39.5&layer=mapnik";
+  // Initialize map
+  useEffect(() => {
+    if (mapRef.current && !mapInstanceRef.current) {
+      // Create map instance
+      const map = L.map(mapRef.current).setView([39.8283, -98.5795], 4);
+      mapInstanceRef.current = map;
 
-  if (locationsWithEvents.length > 0) {
-    // Center map on the first location with events (without default marker)
-    const firstLoc = locationsWithEvents[0];
-    mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${
-      firstLoc.lng - 0.1
-    },${firstLoc.lat - 0.1},${firstLoc.lng + 0.1},${
-      firstLoc.lat + 0.1
-    }&layer=mapnik`;
-  }
+      // Add OpenStreetMap tiles
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
+      }).addTo(map);
+
+      // Add markers for each location with events
+      locationsWithEvents.forEach((location) => {
+        const marker = L.marker([location.lat, location.lng]).addTo(map)
+          .bindPopup(`
+            <div style="text-align: center;">
+              <h3 style="margin: 0 0 10px 0; color: #333;">📍 ${
+                location.city
+              }</h3>
+              <p style="margin: 0; color: #666;">
+                ${eventsByZip[location.zip].length} event${
+          eventsByZip[location.zip].length > 1 ? "s" : ""
+        } in this area
+              </p>
+              <button 
+                onclick="window.selectLocation('${location.zip}')"
+                style="
+                  background: #ff6b6b; 
+                  color: white; 
+                  border: none; 
+                  padding: 8px 16px; 
+                  border-radius: 8px; 
+                  cursor: pointer; 
+                  margin-top: 10px;
+                "
+              >
+                View Events
+              </button>
+            </div>
+          `);
+
+        // Store marker reference for potential future use
+        location.marker = marker;
+      });
+
+      // Fit map to show all markers
+      if (locationsWithEvents.length > 0) {
+        const group = new L.featureGroup(
+          locationsWithEvents.map((loc) => loc.marker)
+        );
+        map.fitBounds(group.getBounds().pad(0.1));
+      }
+    }
+
+    // Cleanup function
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, [locationsWithEvents, eventsByZip]);
+
+  // Add global function for marker popup buttons
+  useEffect(() => {
+    window.selectLocation = (zipCode) => {
+      const location = locationsWithEvents.find((loc) => loc.zip === zipCode);
+      if (location) {
+        setSelectedLocation(location);
+      }
+    };
+
+    return () => {
+      delete window.selectLocation;
+    };
+  }, [locationsWithEvents]);
 
   const handleLocationClick = (location) => {
     setSelectedLocation(
@@ -71,6 +150,7 @@ const MapView = ({ events = [] }) => {
 
   return (
     <div
+      ref={mapRef}
       style={{
         width: "100%",
         height: 600,
@@ -84,23 +164,6 @@ const MapView = ({ events = [] }) => {
         isolation: "isolate",
       }}
     >
-      <iframe
-        title="Events Map"
-        src={mapUrl}
-        style={{
-          width: "100%",
-          height: "100%",
-          border: "none",
-          background: "transparent",
-          display: "block",
-          position: "relative",
-          zIndex: 1,
-        }}
-        allowFullScreen
-        frameBorder="0"
-        scrolling="no"
-      />
-
       {/* Event count overlay */}
       <div
         style={{
@@ -115,6 +178,7 @@ const MapView = ({ events = [] }) => {
           color: "#333",
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
           maxWidth: "300px",
+          zIndex: 1000,
         }}
       >
         🗺️ {events.length} Events Found
@@ -127,75 +191,6 @@ const MapView = ({ events = [] }) => {
           )}
         </div>
       </div>
-
-      {/* Interactive location pins */}
-      {locationsWithEvents.map((location, index) => (
-        <div
-          key={location.zip}
-          style={{
-            position: "absolute",
-            left: `${20 + index * 15}%`,
-            top: `${30 + index * 10}%`,
-            cursor: "pointer",
-            zIndex: 10,
-          }}
-        >
-          {/* Pin */}
-          <div
-            onClick={() => handleLocationClick(location)}
-            style={{
-              width: "40px",
-              height: "40px",
-              background: "linear-gradient(135deg, #ff6b6b, #ff8e8e)",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "white",
-              fontSize: "18px",
-              fontWeight: "bold",
-              boxShadow: "0 4px 12px rgba(255, 107, 107, 0.4)",
-              border: "3px solid white",
-              transition: "all 0.3s ease",
-              transform:
-                selectedLocation?.zip === location.zip
-                  ? "scale(1.2)"
-                  : "scale(1)",
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.transform = "scale(1.1)";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.transform =
-                selectedLocation?.zip === location.zip
-                  ? "scale(1.2)"
-                  : "scale(1)";
-            }}
-          >
-            📍
-          </div>
-
-          {/* Pin label */}
-          <div
-            style={{
-              position: "absolute",
-              top: "45px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              background: "rgba(255, 255, 255, 0.95)",
-              padding: "4px 8px",
-              borderRadius: "6px",
-              fontSize: "12px",
-              fontWeight: "600",
-              color: "#333",
-              whiteSpace: "nowrap",
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            {location.name}
-          </div>
-        </div>
-      ))}
 
       {/* Event details popup */}
       {selectedLocation && (
@@ -211,7 +206,7 @@ const MapView = ({ events = [] }) => {
             boxShadow: "0 8px 25px rgba(0, 0, 0, 0.2)",
             maxHeight: "300px",
             overflowY: "auto",
-            zIndex: 20,
+            zIndex: 1000,
           }}
         >
           <div
@@ -300,6 +295,7 @@ const MapView = ({ events = [] }) => {
             fontSize: "12px",
             color: "#666",
             boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+            zIndex: 1000,
           }}
         >
           💡 Click pins to see events
