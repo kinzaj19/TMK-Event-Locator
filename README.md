@@ -107,4 +107,7 @@ Interactive Google Maps component showing event locations with custom markers an
 ### AnimatedHeader
 Hero section with background image, navigation, and call-to-action buttons.
 
+
+
+
 **Made with ❤️ by AI Interns at Tech Me Kid**
